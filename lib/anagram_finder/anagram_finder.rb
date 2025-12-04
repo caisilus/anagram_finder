@@ -2,17 +2,14 @@
 
 module AnagramFinder
   class AnagramFinder
-    attr_reader :word, :anagrams
+    def self.call(s, p)
+      p_letters_counts = p.chars.tally
 
-    def initialize(word)
-      @word = word
-      @anagrams = word.chars.permutation.to_a.map(&:join)
-    end
+      s.chars.each_cons(p.length).with_index.filter_map do |window, i|
+        window_letters_counts = window.tally
 
-    def first_indices_in(another_word)
-      anagrams.map do |anagram|
-        another_word.index(anagram)
-      end.compact
+        i if window_letters_counts == p_letters_counts
+      end
     end
   end
 end
